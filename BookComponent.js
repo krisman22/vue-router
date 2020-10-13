@@ -64,5 +64,13 @@ export const BookComponent = {
                 <li v-for="(num, value) of book">
                     {{ num +' : '+ value }} <br>
         </li> </ul>
-        </div> `
+        </div> `,
+    beforeRouteLeave (to, from, next) {
+        const answer = window.confirm('Apakah anda yakin untuk keluar')
+        if(answer){
+            next()
+        }else {
+            next(false)
+        }
+    }
 }
