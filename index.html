@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="lib/vue.js"></script>
+    <script src="lib/vue-router.js"></script>
+
+    <title>Vue Router</title>
+
+    <style type="style/css">
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity .5s;
+        }
+        .fade-enter, .fade-leave-to {
+            opacity: 0; 
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>
+            <router-link to="/">Home</router-link>
+            <router-link to="/about">About</router-link>
+            <router-link to="/books">Books</router-link>
+            <router-link :to="{ name: 'book', params: { bookId: 123 }}">Mastering Vue</router-link>
+        </p>
+        <hr>
+        <transition name="slide" mode="out-in">
+            <router-view></router-view>
+        </transition>
+       
+    </div>
+
+<script type="module">
+
+import {BooksComponent} from './BooksComponent.js'
+import { BookComponent } from './BookComponent.js'
+    // definisikan konfigurasi component
+const Home = { template: '<div><h2>Halaman Home</h2></div>' }
+const About = { template: '<div><h2>Halaman About</h2></div>' }
+// mapping route path dengan componentnya, dibaca dari atas ke bawah
+const routes = [
+    { path: '/', component: Home, alias: '/home' },
+    { path: '/about', component: About },
+    { path: '/books', component: BooksComponent },
+    { path: '/book/:id', component: BookComponent, props: true },
+    { path: '*', redirect: '/' }
+]
+// register routing aplikasi kita pada objek dari class VueRouter
+const router = new VueRouter({
+    routes // bentuk pendek dari `routes: routes`
+})
+// register objek router pada objek Vue
+var vm = new Vue({
+    el: '#app',
+    router, })    
+</script>
+</body>
+</html>
