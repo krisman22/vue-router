@@ -44,7 +44,7 @@ const About = { template: '<div><h2>Halaman About</h2></div>' }
 // mapping route path dengan componentnya, dibaca dari atas ke bawah
 const routes = [
     { path: '/', component: Home, alias: '/home' },
-    { path: '/about', component: About },
+    { path: '/about', component: About, meta: {login : true} },
     { path: '/books', component: BooksComponent },
     { path: '/book/:id', component: BookComponent, props: true },
     { path: '*', redirect: '/' }
@@ -52,6 +52,15 @@ const routes = [
 // register routing aplikasi kita pada objek dari class VueRouter
 const router = new VueRouter({
     routes // bentuk pendek dari `routes: routes`
+})
+
+router.beforeEach((to, from, next) => {
+    if(to.matched.some(record => record.meta.login)){
+        alert('Halaman ini hanya untuk user yang sudah login')
+        next(false)
+    }else{
+        next()
+    }
 })
 // register objek router pada objek Vue
 var vm = new Vue({
